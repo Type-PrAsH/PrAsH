@@ -1,0 +1,484 @@
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KAIRO — Video Editor</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&amp;family=Syne:wght@700;800&amp;display=swap" rel="stylesheet">
+  <style>
+    html, body { height: 100%; margin: 0; }
+    * { box-sizing: border-box; }
+    .font-syne { font-family: 'Syne', sans-serif; }
+    .font-outfit { font-family: 'Outfit', sans-serif; }
+
+    .app-scroll { height: 100%; overflow-y: auto; overflow-x: hidden; scroll-behavior: smooth; }
+
+    .service-card { transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+    .service-card:hover { transform: translateY(-8px) scale(1.02); }
+    .service-card:hover .card-glow { opacity: 1; }
+    .card-glow { transition: opacity 0.4s ease; opacity: 0; }
+
+    .project-thumb { transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+    .project-thumb:hover { transform: scale(1.03); }
+    .project-thumb:hover .thumb-overlay { opacity: 1; }
+    .thumb-overlay { transition: opacity 0.3s ease; }
+
+    .fade-up { opacity: 0; transform: translateY(30px); animation: fadeUp 0.7s ease forwards; }
+    @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.2s; }
+    .delay-3 { animation-delay: 0.3s; }
+    .delay-4 { animation-delay: 0.4s; }
+    .delay-5 { animation-delay: 0.5s; }
+
+    .nav-link { position: relative; }
+    .nav-link::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 2px; transition: width 0.3s ease; }
+    .nav-link:hover::after { width: 100%; }
+
+    .grain { position: fixed; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.03; pointer-events: none; z-index: 999;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    }
+
+    .cta-btn { transition: all 0.3s ease; position: relative; overflow: hidden; }
+    .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.3); }
+
+    .back-btn { transition: all 0.3s ease; }
+    .back-btn:hover { transform: translateX(-4px); }
+
+    .page-transition { animation: pageFade 0.4s ease forwards; }
+    @keyframes pageFade { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            bg: '#0a0a0b',
+            surface: '#141416',
+            accent: '#c8ff00',
+            text: '#e8e8e8',
+            muted: '#6b6b6b'
+          }
+        }
+      }
+    }
+  </script>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full bg-bg font-outfit text-text">
+  <div class="grain"></div>
+  <div id="app" class="app-scroll w-full" style="height:100%;"><!-- MAIN PAGE -->
+   <div id="main-page"><!-- NAV -->
+    <nav id="nav" class="fixed top-0 left-0 w-full z-50 bg-bg/80 backdrop-blur-xl border-b border-white/5">
+     <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between"><a href="#home" class="font-syne text-xl font-bold tracking-tight" id="nav-logo">KAIRO<span class="text-accent">.</span></a>
+      <div class="hidden md:flex items-center gap-8"><a href="#home" class="nav-link text-sm text-muted hover:text-text" style="--c:var(--accent)">Home</a> <a href="#services" class="nav-link text-sm text-muted hover:text-text">Services</a> <a href="#about" class="nav-link text-sm text-muted hover:text-text">About</a> <a href="#contact" class="nav-link text-sm text-muted hover:text-text">Contact</a>
+      </div><button id="mobile-menu-btn" class="md:hidden text-text" aria-label="Menu"> <i data-lucide="menu" style="width:24px;height:24px;"></i> </button>
+     </div><!-- Mobile menu -->
+     <div id="mobile-menu" class="hidden md:hidden bg-bg/95 backdrop-blur-xl border-t border-white/5 px-6 py-4"><a href="#home" class="block py-3 text-muted hover:text-text" onclick="closeMobile()">Home</a> <a href="#services" class="block py-3 text-muted hover:text-text" onclick="closeMobile()">Services</a> <a href="#about" class="block py-3 text-muted hover:text-text" onclick="closeMobile()">About</a> <a href="#contact" class="block py-3 text-muted hover:text-text" onclick="closeMobile()">Contact</a>
+     </div>
+    </nav><!-- HERO -->
+    <section id="home" class="relative min-h-[90%] flex items-center px-6 pt-24">
+     <div class="max-w-6xl mx-auto w-full">
+      <div class="max-w-3xl">
+       <div class="fade-up inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/10 bg-white/5 text-xs text-muted mb-8"><span class="w-2 h-2 rounded-full bg-accent animate-pulse"></span> Available for projects
+       </div>
+       <h1 id="hero-title" class="fade-up delay-1 font-syne text-4xl sm:text-5xl md:text-7xl font-extrabold leading-[1.05] tracking-tight mb-6">Stories that move.<br><span class="text-accent">Edits that convert.</span></h1>
+       <p id="hero-subtitle" class="fade-up delay-2 text-lg md:text-xl text-muted max-w-xl mb-10 leading-relaxed">I transform raw footage into cinematic experiences that captivate audiences and drive results.</p>
+       <div class="fade-up delay-3 flex flex-wrap gap-4"><a href="#services" class="cta-btn inline-flex items-center gap-2 bg-accent text-bg font-semibold px-7 py-3.5 rounded-full text-sm"> View My Work <i data-lucide="arrow-right" style="width:16px;height:16px;"></i> </a> <a href="#contact" class="cta-btn inline-flex items-center gap-2 border border-white/15 text-text font-medium px-7 py-3.5 rounded-full text-sm hover:bg-white/5"> Let's Talk </a>
+       </div>
+      </div><!-- Stats -->
+      <div class="fade-up delay-4 mt-16 grid grid-cols-3 gap-6 max-w-md">
+       <div>
+        <span class="font-syne text-2xl md:text-3xl font-bold text-accent">50+</span>
+        <p class="text-xs text-muted mt-1">Projects Delivered</p>
+       </div>
+       <div>
+        <span class="font-syne text-2xl md:text-3xl font-bold text-accent">30+</span>
+        <p class="text-xs text-muted mt-1">Happy Clients</p>
+       </div>
+       <div>
+        <span class="font-syne text-2xl md:text-3xl font-bold text-accent">3+</span>
+        <p class="text-xs text-muted mt-1">Years Experience</p>
+       </div>
+      </div>
+     </div>
+    </section><!-- SERVICES -->
+    <section id="services" class="px-6 py-24">
+     <div class="max-w-6xl mx-auto">
+      <div class="fade-up mb-4 text-xs text-accent uppercase tracking-[0.3em] font-medium">
+       What I Do
+      </div>
+      <h2 class="fade-up delay-1 font-syne text-3xl md:text-5xl font-bold mb-4">Services</h2>
+      <p class="fade-up delay-2 text-muted max-w-lg mb-14">Click any service to explore related projects and see what I can do for you.</p>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5" id="services-grid"><!-- Cards inserted by JS -->
+      </div>
+     </div>
+    </section><!-- ABOUT -->
+    <section id="about" class="px-6 py-24 bg-surface/50">
+     <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-center">
+      <div>
+       <div class="text-xs text-accent uppercase tracking-[0.3em] font-medium mb-4">
+        About
+       </div>
+       <h2 id="about-heading" class="font-syne text-3xl md:text-4xl font-bold mb-6">Crafting Visual Stories That Resonate</h2>
+       <p id="about-text" class="text-muted leading-relaxed mb-8">I'm a video editor who turns concepts into compelling narratives. My approach blends technical precision with creative storytelling to deliver content that resonates with your audience and achieves measurable results.</p>
+       <div class="space-y-4">
+        <div class="flex items-start gap-3">
+         <div class="mt-1 w-5 h-5 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0">
+          <i data-lucide="check" style="width:12px;height:12px;" class="text-accent"></i>
+         </div><span class="text-sm text-muted">Fast turnaround without compromising quality</span>
+        </div>
+        <div class="flex items-start gap-3">
+         <div class="mt-1 w-5 h-5 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0">
+          <i data-lucide="check" style="width:12px;height:12px;" class="text-accent"></i>
+         </div><span class="text-sm text-muted">Cinematic color grading &amp; sound design</span>
+        </div>
+        <div class="flex items-start gap-3">
+         <div class="mt-1 w-5 h-5 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0">
+          <i data-lucide="check" style="width:12px;height:12px;" class="text-accent"></i>
+         </div><span class="text-sm text-muted">Unlimited revisions until you're thrilled</span>
+        </div>
+       </div>
+      </div>
+      <div class="relative">
+       <div class="aspect-square rounded-2xl bg-gradient-to-br from-accent/10 via-surface to-accent/5 border border-white/5 flex items-center justify-center">
+        <div class="text-center">
+         <div class="w-24 h-24 mx-auto rounded-full bg-accent/20 flex items-center justify-center mb-4"><i data-lucide="film" style="width:40px;height:40px;" class="text-accent"></i>
+         </div>
+         <p class="text-sm text-muted">Your Photo Here</p>
+        </div>
+       </div>
+      </div>
+     </div>
+    </section><!-- WHY CHOOSE ME -->
+    <section class="px-6 py-24">
+     <div class="max-w-6xl mx-auto">
+      <div class="text-xs text-accent uppercase tracking-[0.3em] font-medium mb-4">
+       Why Me
+      </div>
+      <h2 class="font-syne text-3xl md:text-4xl font-bold mb-14">What Sets Me Apart</h2>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+       <div class="p-6 rounded-xl bg-surface border border-white/5">
+        <div class="w-10 h-10 rounded-lg bg-accent/15 flex items-center justify-center mb-4">
+         <i data-lucide="zap" style="width:20px;height:20px;" class="text-accent"></i>
+        </div>
+        <h3 class="font-semibold mb-2 text-sm">Lightning Fast</h3>
+        <p class="text-xs text-muted leading-relaxed">Quick turnaround times without cutting corners on quality.</p>
+       </div>
+       <div class="p-6 rounded-xl bg-surface border border-white/5">
+        <div class="w-10 h-10 rounded-lg bg-accent/15 flex items-center justify-center mb-4">
+         <i data-lucide="palette" style="width:20px;height:20px;" class="text-accent"></i>
+        </div>
+        <h3 class="font-semibold mb-2 text-sm">Creative Vision</h3>
+        <p class="text-xs text-muted leading-relaxed">Every edit tells a story with intentional pacing and emotion.</p>
+       </div>
+       <div class="p-6 rounded-xl bg-surface border border-white/5">
+        <div class="w-10 h-10 rounded-lg bg-accent/15 flex items-center justify-center mb-4">
+         <i data-lucide="message-circle" style="width:20px;height:20px;" class="text-accent"></i>
+        </div>
+        <h3 class="font-semibold mb-2 text-sm">Clear Communication</h3>
+        <p class="text-xs text-muted leading-relaxed">Regular updates and responsive feedback loops throughout.</p>
+       </div>
+       <div class="p-6 rounded-xl bg-surface border border-white/5">
+        <div class="w-10 h-10 rounded-lg bg-accent/15 flex items-center justify-center mb-4">
+         <i data-lucide="repeat" style="width:20px;height:20px;" class="text-accent"></i>
+        </div>
+        <h3 class="font-semibold mb-2 text-sm">Unlimited Revisions</h3>
+        <p class="text-xs text-muted leading-relaxed">I keep refining until the result exceeds your expectations.</p>
+       </div>
+      </div>
+     </div>
+    </section><!-- CONTACT -->
+    <section id="contact" class="px-6 py-24 bg-surface/50">
+     <div class="max-w-6xl mx-auto">
+      <div class="max-w-xl mx-auto text-center">
+       <div class="text-xs text-accent uppercase tracking-[0.3em] font-medium mb-4">
+        Get In Touch
+       </div>
+       <h2 id="contact-heading" class="font-syne text-3xl md:text-4xl font-bold mb-4">Let's Create Something Amazing</h2>
+       <p class="text-muted mb-10">Have a project in mind? Drop me a message and let's bring your vision to life.</p>
+       <form id="contact-form" class="text-left space-y-4">
+        <div class="grid sm:grid-cols-2 gap-4">
+         <div><label for="cf-name" class="block text-xs text-muted mb-1.5">Name</label> <input id="cf-name" type="text" class="w-full bg-bg border border-white/10 rounded-lg px-4 py-3 text-sm text-text placeholder-muted/50 focus:outline-none focus:border-accent/50 transition" placeholder="Your name" required>
+         </div>
+         <div><label for="cf-email" class="block text-xs text-muted mb-1.5">Email</label> <input id="cf-email" type="email" class="w-full bg-bg border border-white/10 rounded-lg px-4 py-3 text-sm text-text placeholder-muted/50 focus:outline-none focus:border-accent/50 transition" placeholder="you@email.com" required>
+         </div>
+        </div>
+        <div><label for="cf-service" class="block text-xs text-muted mb-1.5">Service Interested In</label> <select id="cf-service" class="w-full bg-bg border border-white/10 rounded-lg px-4 py-3 text-sm text-text focus:outline-none focus:border-accent/50 transition"> <option>YouTube Video Editing</option> <option>Short-Form / Reels</option> <option>Commercial / Ads</option> <option>Color Grading</option> <option>Motion Graphics</option> <option>Other</option> </select>
+        </div>
+        <div><label for="cf-msg" class="block text-xs text-muted mb-1.5">Message</label> <textarea id="cf-msg" rows="4" class="w-full bg-bg border border-white/10 rounded-lg px-4 py-3 text-sm text-text placeholder-muted/50 focus:outline-none focus:border-accent/50 transition resize-none" placeholder="Tell me about your project..." required></textarea>
+        </div><button type="submit" class="cta-btn w-full bg-accent text-bg font-semibold py-3.5 rounded-full text-sm"> Send Message </button>
+        <div id="form-success" class="hidden text-center text-sm text-accent py-2">
+         ✓ Message sent! I'll get back to you soon.
+        </div>
+       </form>
+       <div class="mt-10 flex items-center justify-center gap-6"><span id="contact-email-display" class="inline-flex items-center gap-2 text-sm text-muted"><i data-lucide="mail" style="width:14px;height:14px;"></i> hello@kairo.studio</span>
+       </div>
+      </div>
+     </div>
+    </section><!-- FOOTER -->
+    <footer class="px-6 py-8 border-t border-white/5">
+     <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4"><span class="font-syne text-sm font-bold">KAIRO<span class="text-accent">.</span></span>
+      <p class="text-xs text-muted">© 2025 All rights reserved.</p>
+     </div>
+    </footer>
+   </div><!-- /main-page --> <!-- SERVICE DETAIL PAGE (hidden by default) -->
+   <div id="service-page" class="hidden min-h-full"><!-- Content injected by JS -->
+   </div>
+  </div>
+  <script>
+    // ── SERVICE DATA ──
+    const services = [
+      {
+        id: 'youtube',
+        icon: 'youtube',
+        title: 'YouTube Video Editing',
+        desc: 'Engaging long-form content optimized for watch time and retention.',
+        detail: 'From vlogs to tutorials, I craft YouTube videos with dynamic pacing, clean cuts, and strategic hooks that keep viewers watching. Every edit is optimized for audience retention and algorithm performance.',
+        types: ['Vlogs & Lifestyle', 'Tutorials & How-To', 'Podcast Video', 'Documentary Style'],
+        projects: [
+          { name: 'Tech Review Series', client: 'TechVault', desc: 'Edited 12-episode tech review series achieving 2M+ combined views with 65% avg retention.', color: 'from-blue-500/20 to-purple-500/20' },
+          { name: 'Travel Vlog Rebrand', client: 'WanderMore', desc: 'Complete channel rebrand with new intro, transitions, and pacing style. Subscriber growth +40%.', color: 'from-emerald-500/20 to-teal-500/20' },
+          { name: 'Cooking Tutorial', client: 'Chef Mila', desc: 'Clean, appetizing edits with overhead shots and smooth transitions. 500K views on first video.', color: 'from-orange-500/20 to-red-500/20' }
+        ]
+      },
+      {
+        id: 'reels',
+        icon: 'smartphone',
+        title: 'Short-Form / Reels',
+        desc: 'Scroll-stopping vertical content for Instagram, TikTok & Shorts.',
+        detail: 'I create punchy, attention-grabbing short-form videos designed to stop the scroll. Fast-paced edits, trending formats, and platform-native optimization for maximum reach and engagement.',
+        types: ['Instagram Reels', 'TikTok Content', 'YouTube Shorts', 'Promotional Clips'],
+        projects: [
+          { name: 'Fashion Brand Launch', client: 'VÊTIR', desc: '30 reels for product launch campaign. Average 150K views, 3 went viral at 1M+.', color: 'from-pink-500/20 to-rose-500/20' },
+          { name: 'Fitness Transformation', client: 'FitPro Academy', desc: 'Before/after transformation reels with dynamic text and beat-synced transitions.', color: 'from-yellow-500/20 to-amber-500/20' },
+          { name: 'Restaurant Content', client: 'Noma Bistro', desc: 'Cinematic food reels with ASMR audio design. Built 25K followers in 2 months.', color: 'from-lime-500/20 to-green-500/20' }
+        ]
+      },
+      {
+        id: 'commercial',
+        icon: 'tv',
+        title: 'Commercial / Ads',
+        desc: 'High-converting ad creatives for brands and businesses.',
+        detail: 'I produce polished commercial edits that tell your brand story in seconds. Every frame is engineered for conversion — from hook to CTA. Optimized for Meta, YouTube, and display ad platforms.',
+        types: ['Product Ads', 'Brand Story Videos', 'Testimonial Edits', 'Event Promos'],
+        projects: [
+          { name: 'SaaS Product Launch', client: 'Flowbase', desc: 'Animated product demo ad achieving 4.2% CTR and 2x ROAS across Meta platforms.', color: 'from-cyan-500/20 to-blue-500/20' },
+          { name: 'Real Estate Showcase', client: 'Luxe Properties', desc: 'Cinematic property walkthroughs with drone footage integration. 3 properties sold within a week.', color: 'from-stone-500/20 to-zinc-500/20' },
+          { name: 'Event Highlight Reel', client: 'SUMMIT 2024', desc: 'Fast-paced 60s recap capturing 3-day conference energy. 800K organic views.', color: 'from-violet-500/20 to-purple-500/20' }
+        ]
+      },
+      {
+        id: 'color',
+        icon: 'sun',
+        title: 'Color Grading',
+        desc: 'Cinematic color correction that sets the mood and tone.',
+        detail: 'Professional color grading that transforms flat footage into cinematic visuals. I work with DaVinci Resolve to deliver precise, consistent color across your entire project — from subtle corrections to bold cinematic looks.',
+        types: ['Film Look', 'Brand Color Matching', 'Batch Correction', 'HDR Grading'],
+        projects: [
+          { name: 'Short Film "Dusk"', client: 'Indie Director', desc: 'Full color grade for 22-minute short film. Warm golden-hour palette with teal shadows.', color: 'from-amber-500/20 to-orange-500/20' },
+          { name: 'Music Video Grade', client: 'Artist NOVA', desc: 'Moody, desaturated grade with selective color pops. 2M views on YouTube.', color: 'from-indigo-500/20 to-blue-500/20' },
+          { name: 'Wedding Film', client: 'Private Client', desc: 'Romantic, airy color palette with soft highlights and pastel tones across 4-hour footage.', color: 'from-rose-500/20 to-pink-500/20' }
+        ]
+      },
+      {
+        id: 'motion',
+        icon: 'sparkles',
+        title: 'Motion Graphics',
+        desc: 'Animated titles, lower thirds, and visual effects.',
+        detail: 'Custom motion graphics that elevate your video production. From animated logos and title sequences to data visualizations and kinetic typography — I bring static concepts to life with smooth, purposeful animation.',
+        types: ['Animated Titles', 'Logo Animation', 'Infographic Videos', 'Lower Thirds'],
+        projects: [
+          { name: 'Channel Intro Package', client: 'GameZone', desc: 'Complete animated intro, outro, and transition package. Bold 3D-style graphics with particle effects.', color: 'from-red-500/20 to-orange-500/20' },
+          { name: 'Explainer Video', client: 'FinTech App', desc: '90s animated explainer breaking down complex features into clear, engaging visuals.', color: 'from-teal-500/20 to-cyan-500/20' },
+          { name: 'Social Media Kit', client: 'Startup Co', desc: 'Animated template kit with 20+ customizable motion graphics for consistent brand content.', color: 'from-fuchsia-500/20 to-purple-500/20' }
+        ]
+      }
+    ];
+
+    // ── RENDER SERVICE CARDS ──
+    const grid = document.getElementById('services-grid');
+    services.forEach((s, i) => {
+      const card = document.createElement('div');
+      card.className = 'service-card cursor-pointer relative rounded-xl bg-surface border border-white/5 p-6 group';
+      card.style.animationDelay = `${i * 0.1}s`;
+      card.innerHTML = `
+        <div class="card-glow absolute inset-0 rounded-xl bg-gradient-to-br from-accent/5 to-transparent pointer-events-none"></div>
+        <div class="relative z-10">
+          <div class="w-11 h-11 rounded-lg bg-accent/15 flex items-center justify-center mb-5"><i data-lucide="${s.icon}" style="width:20px;height:20px;" class="text-accent"></i></div>
+          <h3 class="font-semibold mb-2">${s.title}</h3>
+          <p class="text-sm text-muted leading-relaxed mb-4">${s.desc}</p>
+          <span class="inline-flex items-center gap-1 text-xs text-accent font-medium">View Projects <i data-lucide="arrow-right" style="width:12px;height:12px;"></i></span>
+        </div>
+      `;
+      card.addEventListener('click', () => openService(s.id));
+      grid.appendChild(card);
+    });
+
+    // ── OPEN SERVICE DETAIL ──
+    function openService(id) {
+      const s = services.find(x => x.id === id);
+      if (!s) return;
+      const page = document.getElementById('service-page');
+      page.innerHTML = `
+        <div class="page-transition pt-8 pb-16 px-6">
+          <div class="max-w-6xl mx-auto">
+            <button onclick="closeService()" class="back-btn inline-flex items-center gap-2 text-sm text-muted hover:text-text mb-10">
+              <i data-lucide="arrow-left" style="width:16px;height:16px;"></i> Back to Services
+            </button>
+            <div class="mb-12">
+              <div class="inline-flex items-center gap-3 mb-4">
+                <div class="w-10 h-10 rounded-lg bg-accent/15 flex items-center justify-center"><i data-lucide="${s.icon}" style="width:20px;height:20px;" class="text-accent"></i></div>
+                <span class="text-xs text-accent uppercase tracking-[0.2em] font-medium">Service</span>
+              </div>
+              <h1 class="font-syne text-3xl md:text-5xl font-bold mb-4">${s.title}</h1>
+              <p class="text-muted max-w-2xl leading-relaxed mb-8">${s.detail}</p>
+              <div class="flex flex-wrap gap-2">
+                ${s.types.map(t => `<span class="px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs text-muted">${t}</span>`).join('')}
+              </div>
+            </div>
+
+            <h2 class="font-syne text-xl md:text-2xl font-bold mb-8">Featured Projects</h2>
+            <div class="grid md:grid-cols-3 gap-5">
+              ${s.projects.map((p, i) => `
+                <div class="project-thumb relative rounded-xl overflow-hidden bg-surface border border-white/5 group" style="animation: fadeUp 0.5s ease forwards; animation-delay: ${i * 0.15}s; opacity:0;">
+                  <div class="aspect-video bg-gradient-to-br ${p.color} flex items-center justify-center relative">
+                    <div class="w-14 h-14 rounded-full bg-white/10 backdrop-blur flex items-center justify-center">
+                      <i data-lucide="play" style="width:24px;height:24px;" class="text-white ml-1"></i>
+                    </div>
+                    <div class="thumb-overlay absolute inset-0 bg-black/30 opacity-0 flex items-center justify-center">
+                      <span class="text-xs text-white font-medium">Preview</span>
+                    </div>
+                  </div>
+                  <div class="p-5">
+                    <p class="text-xs text-accent mb-1">${p.client}</p>
+                    <h3 class="font-semibold text-sm mb-2">${p.name}</h3>
+                    <p class="text-xs text-muted leading-relaxed">${p.desc}</p>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+
+            <div class="mt-16 p-8 rounded-xl bg-surface border border-white/5 text-center">
+              <h3 class="font-syne text-xl font-bold mb-2">Need ${s.title}?</h3>
+              <p class="text-sm text-muted mb-6">Let's discuss your project and bring your vision to life.</p>
+              <button onclick="closeService(); setTimeout(() => document.getElementById('contact').scrollIntoView({behavior:'smooth'}), 300);" class="cta-btn inline-flex items-center gap-2 bg-accent text-bg font-semibold px-7 py-3 rounded-full text-sm">
+                Get in Touch <i data-lucide="arrow-right" style="width:16px;height:16px;"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+      document.getElementById('main-page').classList.add('hidden');
+      page.classList.remove('hidden');
+      document.getElementById('app').scrollTop = 0;
+      lucide.createIcons();
+    }
+
+    function closeService() {
+      document.getElementById('service-page').classList.add('hidden');
+      document.getElementById('main-page').classList.remove('hidden');
+      setTimeout(() => document.getElementById('services').scrollIntoView({ behavior: 'smooth' }), 50);
+    }
+
+    // ── MOBILE MENU ──
+    document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+      document.getElementById('mobile-menu').classList.toggle('hidden');
+    });
+    function closeMobile() { document.getElementById('mobile-menu').classList.add('hidden'); }
+
+    // ── CONTACT FORM ──
+    document.getElementById('contact-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      document.getElementById('form-success').classList.remove('hidden');
+      e.target.reset();
+      setTimeout(() => document.getElementById('form-success').classList.add('hidden'), 4000);
+    });
+
+    // ── ELEMENT SDK ──
+    const defaultConfig = {
+      hero_title: 'Stories that move.\nEdits that convert.',
+      hero_subtitle: 'I transform raw footage into cinematic experiences that captivate audiences and drive results.',
+      about_heading: 'Crafting Visual Stories That Resonate',
+      about_text: "I'm a video editor who turns concepts into compelling narratives. My approach blends technical precision with creative storytelling to deliver content that resonates with your audience and achieves measurable results.",
+      contact_heading: "Let's Create Something Amazing",
+      contact_email: 'hello@kairo.studio',
+      background_color: '#0a0a0b',
+      surface_color: '#141416',
+      text_color: '#e8e8e8',
+      accent_color: '#c8ff00',
+      muted_color: '#6b6b6b',
+      font_family: 'Outfit',
+      font_size: 16
+    };
+
+    function applyConfig(config) {
+      const c = { ...defaultConfig, ...config };
+
+      // Text
+      const heroEl = document.getElementById('hero-title');
+      if (heroEl) {
+        const parts = (c.hero_title || defaultConfig.hero_title).split('\n');
+        heroEl.innerHTML = parts[0] + (parts[1] ? '<br><span class="text-accent">' + parts[1] + '</span>' : '');
+      }
+      const heroSub = document.getElementById('hero-subtitle');
+      if (heroSub) heroSub.textContent = c.hero_subtitle || defaultConfig.hero_subtitle;
+      const aboutH = document.getElementById('about-heading');
+      if (aboutH) aboutH.textContent = c.about_heading || defaultConfig.about_heading;
+      const aboutT = document.getElementById('about-text');
+      if (aboutT) aboutT.textContent = c.about_text || defaultConfig.about_text;
+      const contactH = document.getElementById('contact-heading');
+      if (contactH) contactH.textContent = c.contact_heading || defaultConfig.contact_heading;
+      const contactE = document.getElementById('contact-email-display');
+      if (contactE) contactE.innerHTML = `<i data-lucide="mail" style="width:14px;height:14px;"></i> ${c.contact_email || defaultConfig.contact_email}`;
+
+      // Colors
+      document.documentElement.style.setProperty('--bg', c.background_color);
+      document.body.style.backgroundColor = c.background_color;
+      document.body.style.color = c.text_color;
+
+      // Font
+      const ff = c.font_family || defaultConfig.font_family;
+      document.body.style.fontFamily = `${ff}, Outfit, sans-serif`;
+      const base = c.font_size || defaultConfig.font_size;
+      document.body.style.fontSize = base + 'px';
+
+      lucide.createIcons();
+    }
+
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange: async (config) => applyConfig(config),
+        mapToCapabilities: (config) => ({
+          recolorables: [
+            { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+            { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+            { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+            { get: () => config.accent_color || defaultConfig.accent_color, set: (v) => { config.accent_color = v; window.elementSdk.setConfig({ accent_color: v }); } },
+            { get: () => config.muted_color || defaultConfig.muted_color, set: (v) => { config.muted_color = v; window.elementSdk.setConfig({ muted_color: v }); } }
+          ],
+          borderables: [],
+          fontEditable: { get: () => config.font_family || defaultConfig.font_family, set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); } },
+          fontSizeable: { get: () => config.font_size || defaultConfig.font_size, set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); } }
+        }),
+        mapToEditPanelValues: (config) => new Map([
+          ['hero_title', config.hero_title || defaultConfig.hero_title],
+          ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+          ['about_heading', config.about_heading || defaultConfig.about_heading],
+          ['about_text', config.about_text || defaultConfig.about_text],
+          ['contact_heading', config.contact_heading || defaultConfig.contact_heading],
+          ['contact_email', config.contact_email || defaultConfig.contact_email]
+        ])
+      });
+    }
+
+    // Init icons
+    lucide.createIcons();
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9ed12cde568dc471',t:'MTc3NjMyMTM4Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
