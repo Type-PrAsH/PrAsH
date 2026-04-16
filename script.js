@@ -7,62 +7,45 @@ const services = [
     desc: 'Cinematic edits for YouTube, Reels, Ads & more—optimized for engagement.',
     detail: 'From vlogs to commercials, I deliver polished video edits with intentional pacing, dynamic cuts, and strategic hooks. Every project is optimized for platform performance and audience retention.',
     types: ['YouTube Videos', 'Short-Form Content', 'Commercial Ads', 'Documentary Style'],
-    projects: [
-      { name: 'Tech Review Series', client: 'TechVault', desc: 'Edited 12-episode tech review series achieving 2M+ combined views with 65% avg retention.', color: 'from-blue-500/20 to-purple-500/20' },
-      { name: 'Travel Vlog Rebrand', client: 'WanderMore', desc: 'Complete channel rebrand with new intro, transitions, and pacing style. Subscriber growth +40%.', color: 'from-emerald-500/20 to-teal-500/20' },
-      { name: 'Product Launch Campaign', client: 'StartupXYZ', desc: 'Fast-paced commercial edit for product launch. 500K views in first week.', color: 'from-orange-500/20 to-red-500/20' }
+    subServices: [
+      {
+        name: 'YouTube Editing',
+        projects: [
+          { name: 'Tech Review Series', client: 'TechVault', desc: 'Edited 12-episode tech review series achieving 2M+ combined views.', color: 'from-blue-500/20 to-purple-500/20' },
+          { name: 'Travel Vlog Rebrand', client: 'WanderMore', desc: 'Complete channel rebrand with new intro, transitions, and pacing style.', color: 'from-emerald-500/20 to-teal-500/20' }
+        ]
+      },
+      {
+        name: 'Reels / Shorts',
+        projects: [
+          { name: 'Product Launch Campaign', client: 'StartupXYZ', desc: 'Fast-paced commercial edit for product launch.', color: 'from-orange-500/20 to-red-500/20' },
+          { name: 'Social Media Kit', client: 'Creator M', desc: 'Engaging, fast-paced edits with motion graphics optimized for short attention spans.', color: 'from-pink-500/20 to-rose-500/20' }
+        ]
+      }
     ]
   },
   {
-    id: 'design',
-    icon: 'palette',
-    title: 'Design & Motion',
-    desc: 'Custom motion graphics, animations & visual effects for dynamic content.',
-    detail: 'I create eye-catching motion graphics and animated designs that elevate your message. From animated logos and title sequences to kinetic typography and data visualizations.',
-    types: ['Motion Graphics', 'Animated Titles', 'Logo Animation', 'Kinetic Typography'],
-    projects: [
-      { name: 'Channel Intro Package', client: 'GameZone', desc: 'Complete animated intro, outro, and transition package with particle effects.', color: 'from-red-500/20 to-orange-500/20' },
-      { name: 'Explainer Video', client: 'FinTech App', desc: '90s animated explainer breaking down complex features into clear, engaging visuals.', color: 'from-teal-500/20 to-cyan-500/20' },
-      { name: 'Social Media Kit', client: 'Startup Co', desc: 'Animated template kit with 20+ customizable motion graphics for consistent brand content.', color: 'from-fuchsia-500/20 to-purple-500/20' }
-    ]
-  },
-  {
-    id: 'brand',
-    icon: 'sparkles',
-    title: 'Brand Direction',
-    desc: 'Visual identity and creative strategy aligned with your brand goals.',
-    detail: 'Strategic creative direction that defines your brand\'s visual language. Color palettes, typography, visual guidelines, and campaign concepts—everything you need for consistent, compelling brand presence.',
-    types: ['Brand Identity', 'Color Grading', 'Visual Guidelines', 'Campaign Concepts'],
-    projects: [
-      { name: 'Tech Startup Rebrand', client: 'QuantumVenture', desc: 'Complete visual identity overhaul: new color palette, typography, and brand voice application across all touchpoints.', color: 'from-indigo-500/20 to-blue-500/20' },
-      { name: 'E-commerce Brand Refresh', client: 'LuxeGoods', desc: 'Cohesive visual system with mood boards, color grading, and lifestyle photography direction.', color: 'from-rose-500/20 to-pink-500/20' },
-      { name: 'Agency Brand Guidelines', client: 'Creative Plus', desc: 'Complete 50+ page brand guidelines document with visual systems and application examples.', color: 'from-amber-500/20 to-yellow-500/20' }
-    ]
-  },
-  {
-    id: 'color',
-    icon: 'sun',
-    title: 'Color Grading',
-    desc: 'Cinematic color correction that sets mood and elevates visual quality.',
-    detail: 'Professional color grading using industry-standard tools to deliver polished, consistent color across your project. From subtle corrections to bold cinematic looks—each grade serves your story.',
-    types: ['Film Look', 'Batch Color Correction', 'HDR Grading', 'Brand Color Matching'],
-    projects: [
-      { name: 'Short Film "Dusk"', client: 'Indie Director', desc: 'Full color grade for 22-minute short film with warm golden-hour palette and teal shadow tones.', color: 'from-amber-500/20 to-orange-500/20' },
-      { name: 'Music Video Grade', client: 'Artist NOVA', desc: 'Moody, desaturated grade with selective color pops and cohesive emotional arc.', color: 'from-indigo-500/20 to-blue-500/20' },
-      { name: 'Wedding Film', client: 'Private Client', desc: 'Romantic, airy color palette with soft highlights and pastel tones across entire film.', color: 'from-rose-500/20 to-pink-500/20' }
-    ]
-  },
-  {
-    id: 'strategy',
-    icon: 'target',
-    title: 'Creative Consulting',
-    desc: 'Strategic guidance on video content, branding & visual communication.',
-    detail: 'Collaborate with me on your creative vision. From concept development to execution strategy, I provide actionable insights to ensure your content resonates and converts.',
-    types: ['Content Strategy', 'Creative Workshops', 'Project Planning', 'Campaign Strategy'],
-    projects: [
-      { name: 'YouTube Channel Strategy', client: 'Creator Academy', desc: 'Developed content pillars, posting schedule, and thumbnail strategy increasing watch time by 3x.', color: 'from-red-500/20 to-pink-500/20' },
-      { name: 'Social Media Blueprint', client: 'Wellness Brand', desc: 'Quarterly content calendar with 80+ video concepts, trending formats, and brand alignment.', color: 'from-green-500/20 to-emerald-500/20' },
-      { name: 'Brand Launch Campaign', client: 'Fashion Label', desc: 'End-to-end creative strategy for brand launch including video narrative, visuals, and rollout timeline.', color: 'from-purple-500/20 to-violet-500/20' }
+    id: 'web',
+    icon: 'layout',
+    title: 'Web Design',
+    desc: 'Stunning, responsive, and high-converting websites.',
+    detail: 'I create modern, scalable web designs with precise aesthetics and optimal user experiences. From landing pages to full e-commerce platforms, every site is crafted for maximum impact.',
+    types: ['Landing Pages', 'E-commerce', 'Portfolios', 'Web Apps'],
+    subServices: [
+      {
+        name: 'Landing Pages',
+        projects: [
+          { name: 'SaaS Waitlist', client: 'CloudApp', desc: 'High-converting dark mode landing page with 3D elements.', color: 'from-indigo-500/20 to-blue-500/20' },
+          { name: 'Event Promo', client: 'TechConf', desc: 'Animated event page for tech conference series.', color: 'from-teal-500/20 to-emerald-500/20' }
+        ]
+      },
+      {
+        name: 'E-commerce',
+        projects: [
+          { name: 'Fashion Store', client: 'LuxeWear', desc: 'Minimalist storefront with complex product configurator.', color: 'from-rose-500/20 to-pink-500/20' },
+          { name: 'Digital Products', client: 'Creator Hub', desc: 'Custom integrated checkout experience.', color: 'from-amber-500/20 to-yellow-500/20' }
+        ]
+      }
     ]
   }
 ];
@@ -109,22 +92,31 @@ function openService(id) {
           </div>
         </div>
 
-        <h2 class="font-syne text-xl md:text-2xl font-bold mb-8">Sub Services</h2>
-        <div class="grid md:grid-cols-3 gap-5">
-          ${s.projects.map((p, i) => `
-            <div class="project-thumb relative rounded-xl overflow-hidden bg-surface border border-white/5 group" style="animation: fadeUp 0.5s ease forwards; animation-delay: ${i * 0.15}s; opacity:0;">
-              <div class="aspect-video bg-gradient-to-br ${p.color} flex items-center justify-center relative">
-                <div class="w-14 h-14 rounded-full bg-white/10 backdrop-blur flex items-center justify-center">
-                  <i data-lucide="play" style="width:24px;height:24px;" class="text-white ml-1"></i>
-                </div>
-                <div class="thumb-overlay absolute inset-0 bg-black/30 opacity-0 flex items-center justify-center">
-                  <span class="text-xs text-white font-medium">View</span>
-                </div>
+        <div class="space-y-12 mb-8">
+          ${s.subServices.map((sub, idx) => `
+            <div>
+              <div class="flex items-center gap-3 mb-6">
+                <span class="w-8 h-[1px] bg-accent/40"></span>
+                <h2 class="font-syne text-xl md:text-2xl font-bold">${sub.name}</h2>
               </div>
-              <div class="p-5">
-                <p class="text-xs text-accent mb-1">${p.client}</p>
-                <h3 class="font-semibold text-sm mb-2">${p.name}</h3>
-                <p class="text-xs text-muted leading-relaxed">${p.desc}</p>
+              <div class="grid md:grid-cols-2 lg:grid-cols-2 gap-5">
+                ${sub.projects.map((p, i) => `
+                  <div class="project-thumb relative rounded-xl overflow-hidden bg-surface border border-white/5 group" style="animation: fadeUp 0.5s ease forwards; animation-delay: ${((idx * 2) + i) * 0.05}s; opacity:0;">
+                    <div class="aspect-video bg-gradient-to-br ${p.color} flex items-center justify-center relative">
+                      <div class="w-14 h-14 rounded-full bg-white/10 backdrop-blur flex items-center justify-center">
+                        <i data-lucide="${s.icon === 'film' ? 'play' : 'external-link'}" style="width:24px;height:24px;" class="text-white flex-shrink-0 font-bold"></i>
+                      </div>
+                      <div class="thumb-overlay absolute inset-0 bg-black/30 opacity-0 flex items-center justify-center group-hover:opacity-100 transition-opacity">
+                        <span class="text-xs text-white font-medium">View</span>
+                      </div>
+                    </div>
+                    <div class="p-5">
+                      <p class="text-xs text-accent mb-1">${p.client}</p>
+                      <h3 class="font-semibold text-sm mb-2">${p.name}</h3>
+                      <p class="text-xs text-muted leading-relaxed">${p.desc}</p>
+                    </div>
+                  </div>
+                `).join('')}
               </div>
             </div>
           `).join('')}
@@ -159,10 +151,44 @@ document.getElementById('mobile-menu-btn').addEventListener('click', () => {
 function closeMobile() { document.getElementById('mobile-menu').classList.add('hidden'); }
 
 // ── CONTACT FORM ──
+const cfService = document.getElementById('cf-service');
+const cfSubservice = document.getElementById('cf-subservice');
+
+const subservicesMap = {
+  'Video Editing': ['YouTube Editing', 'Reels / Shorts', 'Other'],
+  'Web Design': ['Landing Pages', 'E-commerce', 'Other']
+};
+
+if (cfService && cfSubservice) {
+  cfService.addEventListener('change', (e) => {
+    const val = e.target.value;
+    cfSubservice.innerHTML = '<option value="">Select an option</option>';
+    if (subservicesMap[val]) {
+      cfSubservice.disabled = false;
+      cfSubservice.classList.remove('opacity-50', 'cursor-not-allowed');
+      subservicesMap[val].forEach(sub => {
+        const opt = document.createElement('option');
+        opt.value = sub;
+        opt.textContent = sub;
+        cfSubservice.appendChild(opt);
+      });
+    } else {
+      cfSubservice.disabled = true;
+      cfSubservice.classList.add('opacity-50', 'cursor-not-allowed');
+      cfSubservice.innerHTML = '<option value="">Choose a service first</option>';
+    }
+  });
+}
+
 document.getElementById('contact-form').addEventListener('submit', (e) => {
   e.preventDefault();
   document.getElementById('form-success').classList.remove('hidden');
   e.target.reset();
+  if (cfSubservice) {
+    cfSubservice.disabled = true;
+    cfSubservice.classList.add('opacity-50', 'cursor-not-allowed');
+    cfSubservice.innerHTML = '<option value="">Choose a service first</option>';
+  }
   setTimeout(() => document.getElementById('form-success').classList.add('hidden'), 4000);
 });
 
