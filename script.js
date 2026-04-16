@@ -109,7 +109,7 @@ function openService(id) {
           </div>
         </div>
 
-        <h2 class="font-syne text-xl md:text-2xl font-bold mb-8">Featured Projects</h2>
+        <h2 class="font-syne text-xl md:text-2xl font-bold mb-8">Sub Services</h2>
         <div class="grid md:grid-cols-3 gap-5">
           ${s.projects.map((p, i) => `
             <div class="project-thumb relative rounded-xl overflow-hidden bg-surface border border-white/5 group" style="animation: fadeUp 0.5s ease forwards; animation-delay: ${i * 0.15}s; opacity:0;">
@@ -168,13 +168,13 @@ document.getElementById('contact-form').addEventListener('submit', (e) => {
 
 // ── ELEMENT SDK ──
 const defaultConfig = {
-  hero_title: 'Creative direction for brands that matter.',
-  hero_subtitle: 'I craft visual stories through video editing, design, and digital strategy—helping brands connect authentically with their audience.',
-  profile_image_url: '',
-  about_heading: 'Crafting Visual Stories That Resonate',
-  about_text: "I'm a creative director who combines technical expertise with artistic vision. My work spans video editing, motion design, and creative direction—transforming concepts into polished, impactful visual content that drives real results for brands.",
+  hero_title: 'Premium visual solutions for individuals & brands.',
+  hero_subtitle: 'I blend technical expertise with creative design to deliver high-quality video editing and web design that connects authentically with your audience.',
+  profile_image_url: './media/profile_pic.jpeg',
+  about_heading: 'Crafting Digital Experiences',
+  about_text: 'I am Prashant Agrawal, a Computer Science student blending technical expertise with creative problem-solving. My consistent and hardworking approach allows me to deliver high-quality digital services efficiently, ensuring premium outcomes with rigorous attention to detail.',
   contact_heading: "Let's Create Something Amazing",
-  contact_email: 'hello@prashant.studio',
+  contact_email: 'prashforwork@gmail.com',
   background_color: '#0a0a0b',
   surface_color: '#141416',
   text_color: '#e8e8e8',

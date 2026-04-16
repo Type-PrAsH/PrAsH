@@ -1,7 +1,8 @@
 html, body { height: 100%; margin: 0; }
 * { box-sizing: border-box; }
-.font-syne { font-family: 'Syne', sans-serif; }
-.font-outfit { font-family: 'Outfit', sans-serif; }
+.font-syne { font-family: 'Satoshi', sans-serif; letter-spacing: -0.02em; }
+.font-outfit { font-family: 'Inter', sans-serif; }
+
 
 .app-scroll { height: 100%; overflow-y: auto; overflow-x: hidden; scroll-behavior: smooth; }
 
