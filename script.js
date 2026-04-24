@@ -35,6 +35,7 @@ const services = [
       {
         name: 'Landing Pages',
         projects: [
+          { name: 'Wedding Invitation Website', client: 'Ayush & Kavya', desc: 'A modern, responsive wedding invitation site with RSVP functionality.', color: 'from-rose-500/20 to-pink-500/20', link: 'https://ayush-kavya.vercel.app', image: './media/Screenshot from 2026-04-24 17-12-10.png' },
           { name: 'SaaS Waitlist', client: 'CloudApp', desc: 'High-converting dark mode landing page with 3D elements.', color: 'from-indigo-500/20 to-blue-500/20' },
           { name: 'Event Promo', client: 'TechConf', desc: 'Animated event page for tech conference series.', color: 'from-teal-500/20 to-emerald-500/20' }
         ]
@@ -102,7 +103,8 @@ function openService(id) {
               <div class="grid md:grid-cols-2 lg:grid-cols-2 gap-5">
                 ${sub.projects.map((p, i) => `
                   <div class="project-thumb relative rounded-xl overflow-hidden bg-surface border border-white/5 group" style="animation: fadeUp 0.5s ease forwards; animation-delay: ${((idx * 2) + i) * 0.05}s; opacity:0;">
-                    <div class="aspect-video bg-gradient-to-br ${p.color} flex items-center justify-center relative">
+                    ${p.link ? `<a href="${p.link}" target="_blank" class="block relative">` : `<div class="relative">`}
+                    <div class="aspect-video bg-gradient-to-br ${p.color} flex items-center justify-center relative bg-cover bg-center" ${p.image ? `style="background-image: url('${p.image}')"` : ''}>
                       <div class="w-14 h-14 rounded-full bg-white/10 backdrop-blur flex items-center justify-center">
                         <i data-lucide="${s.icon === 'film' ? 'play' : 'external-link'}" style="width:24px;height:24px;" class="text-white flex-shrink-0 font-bold"></i>
                       </div>
@@ -110,8 +112,9 @@ function openService(id) {
                         <span class="text-xs text-white font-medium">View</span>
                       </div>
                     </div>
+                    ${p.link ? `</a>` : `</div>`}
                     <div class="p-5">
-                      <p class="text-xs text-accent mb-1">${p.client}</p>
+                      <p class="text-xs text-accent mb-1">${p.client || ''}</p>
                       <h3 class="font-semibold text-sm mb-2">${p.name}</h3>
                       <p class="text-xs text-muted leading-relaxed">${p.desc}</p>
                     </div>
