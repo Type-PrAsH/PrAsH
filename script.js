@@ -11,15 +11,11 @@ const services = [
       {
         name: 'YouTube Editing',
         projects: [
-          { name: 'Tech Review Series', client: 'TechVault', desc: 'Edited 12-episode tech review series achieving 2M+ combined views.', color: 'from-blue-500/20 to-purple-500/20' },
-          { name: 'Travel Vlog Rebrand', client: 'WanderMore', desc: 'Complete channel rebrand with new intro, transitions, and pacing style.', color: 'from-emerald-500/20 to-teal-500/20' }
         ]
       },
       {
         name: 'Reels / Shorts',
         projects: [
-          { name: 'Product Launch Campaign', client: 'StartupXYZ', desc: 'Fast-paced commercial edit for product launch.', color: 'from-orange-500/20 to-red-500/20' },
-          { name: 'Social Media Kit', client: 'Creator M', desc: 'Engaging, fast-paced edits with motion graphics optimized for short attention spans.', color: 'from-pink-500/20 to-rose-500/20' }
         ]
       }
     ]
@@ -36,15 +32,11 @@ const services = [
         name: 'Landing Pages',
         projects: [
           { name: 'Wedding Invitation Website', client: 'Ayush & Kavya', desc: 'A modern, responsive wedding invitation site with RSVP functionality.', color: 'from-rose-500/20 to-pink-500/20', link: 'https://ayush-kavya.vercel.app', image: './media/Screenshot from 2026-04-24 17-12-10.png' },
-          { name: 'SaaS Waitlist', client: 'CloudApp', desc: 'High-converting dark mode landing page with 3D elements.', color: 'from-indigo-500/20 to-blue-500/20' },
-          { name: 'Event Promo', client: 'TechConf', desc: 'Animated event page for tech conference series.', color: 'from-teal-500/20 to-emerald-500/20' }
         ]
       },
       {
         name: 'E-commerce',
         projects: [
-          { name: 'Fashion Store', client: 'LuxeWear', desc: 'Minimalist storefront with complex product configurator.', color: 'from-rose-500/20 to-pink-500/20' },
-          { name: 'Digital Products', client: 'Creator Hub', desc: 'Custom integrated checkout experience.', color: 'from-amber-500/20 to-yellow-500/20' }
         ]
       }
     ]
